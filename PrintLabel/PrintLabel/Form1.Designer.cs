@@ -74,7 +74,6 @@
             this.lstPrinters.TabIndex = 3;
             this.lstPrinters.UseCompatibleStateImageBehavior = false;
             this.lstPrinters.View = System.Windows.Forms.View.Details;
-            this.lstPrinters.SelectedIndexChanged += new System.EventHandler(this.lstPrinters_SelectedIndexChanged);
             // 
             // btnFind
             // 

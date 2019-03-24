@@ -7,6 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Net;
+using System.IO;
+using Newtonsoft.Json;
 
 using com.citizen.sdk.LabelPrint;
 using System.Diagnostics;
@@ -34,6 +37,27 @@ namespace PrintLabel
             connectType.DisplayMember = "Type";
             connectType.ValueMember = "Value";
             connectType.SelectedIndex = 0;
+           // LoadData();
+        }
+
+        private void LoadData()
+        {
+            string url = "http://tickets.docudays.org.ua/v1/mobile_app/usher/get_screenings";
+
+            HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
+
+            HttpWebResponse httpWebResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+
+            string response;
+
+            using (StreamReader streamReader = new StreamReader(httpWebResponse.GetResponseStream()))
+            {
+                response = streamReader.ReadToEnd();
+
+            }
+
+            List <FilmInformation> filmInformationList = JsonConvert.DeserializeObject<List<FilmInformation>>(response);
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -41,11 +65,6 @@ namespace PrintLabel
             lstPrinters.Items.Clear();
             lstPrinters.Columns.Add("Port", 150, HorizontalAlignment.Left);
             lstPrinters.Columns.Add("", 184, HorizontalAlignment.Left);
-        }
-
-        private void lstPrinters_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
         }
 
 
