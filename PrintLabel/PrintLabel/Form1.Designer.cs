@@ -66,7 +66,9 @@
             // 
             // lstPrinters
             // 
+            this.lstPrinters.HideSelection = false;
             this.lstPrinters.Location = new System.Drawing.Point(13, 41);
+            this.lstPrinters.MultiSelect = false;
             this.lstPrinters.Name = "lstPrinters";
             this.lstPrinters.Size = new System.Drawing.Size(334, 137);
             this.lstPrinters.TabIndex = 3;
