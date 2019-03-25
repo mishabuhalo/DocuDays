@@ -10,6 +10,9 @@ using System.Windows.Forms;
 using System.Net;
 using System.IO;
 using Newtonsoft.Json;
+using System.Globalization;
+using Microsoft.Speech.Recognition;
+
 
 using com.citizen.sdk.LabelPrint;
 using System.Diagnostics;
@@ -25,6 +28,7 @@ namespace PrintLabel
             eErrPrint,
             eErrPrinterStatus
         };
+        List<FilmInformation> filmInformationList;
         public Form1()
         {
             InitializeComponent();
@@ -37,7 +41,7 @@ namespace PrintLabel
             connectType.DisplayMember = "Type";
             connectType.ValueMember = "Value";
             connectType.SelectedIndex = 0;
-           // LoadData();
+            LoadData();
         }
 
         private void LoadData()
@@ -56,8 +60,11 @@ namespace PrintLabel
 
             }
 
-            List <FilmInformation> filmInformationList = JsonConvert.DeserializeObject<List<FilmInformation>>(response);
-
+           filmInformationList = JsonConvert.DeserializeObject<List<FilmInformation>>(response);
+            for (int i = 0; i < filmInformationList.Count(); i++)
+            { 
+                    dataGridView1.Rows.Add(filmInformationList[i].name, filmInformationList[i].description);
+            }
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -280,6 +287,48 @@ namespace PrintLabel
                 {
                 }
             }
-        
+        static Label l;
+
+         void sre_SpeechRecognized(object sender, SpeechRecognizedEventArgs e)
+        {
+            label2.Text = e.Result.Text;
+            
+                l.Text = e.Result.Text;
+            dataGridView1.Rows.Clear();
+                for(int i = 0; i < filmInformationList.Count(); i ++)
+                {
+                    if (e.Result.Text == filmInformationList[i].name)
+                        dataGridView1.Rows.Add(filmInformationList[i].name, filmInformationList[i].description);
+                }
+           
+        }
+
+        private void Form1_Shown(object sender, EventArgs e)
+        {
+
+            l = label1;
+            System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("ru-ru");
+            SpeechRecognitionEngine sre = new SpeechRecognitionEngine(ci);
+            sre.SetInputToDefaultAudioDevice();
+
+            sre.SpeechRecognized += new EventHandler<SpeechRecognizedEventArgs>(sre_SpeechRecognized);
+
+
+            Choices numbers = new Choices();
+            for(int i = 0; i < filmInformationList.Count(); i++)
+                numbers.Add(filmInformationList[i].name);
+            numbers.Add("два");
+
+
+            GrammarBuilder gb = new GrammarBuilder();
+            gb.Culture = ci;
+            gb.Append(numbers);
+
+
+            Grammar g = new Grammar(gb);
+            sre.LoadGrammar(g);
+
+            sre.RecognizeAsync(RecognizeMode.Multiple);
+        }
     }
 }
