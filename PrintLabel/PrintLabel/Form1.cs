@@ -1,21 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net;
 using System.IO;
 using Newtonsoft.Json;
-using System.Globalization;
 using Microsoft.Speech.Recognition;
-
+using System.Globalization;
 
 using com.citizen.sdk.LabelPrint;
-using System.Diagnostics;
 
 namespace PrintLabel
 {
@@ -46,6 +40,8 @@ namespace PrintLabel
 
         private void LoadData()
         {
+            dataGridView1.Rows.Clear();
+
             string url = "http://tickets.docudays.org.ua/v1/mobile_app/usher/get_screenings";
 
             HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
@@ -283,9 +279,7 @@ namespace PrintLabel
 
   
                 }
-                else
-                {
-                }
+               
             }
         static Label l;
 
@@ -307,7 +301,7 @@ namespace PrintLabel
         {
 
             l = label1;
-            System.Globalization.CultureInfo ci = new System.Globalization.CultureInfo("ru-ru");
+            CultureInfo ci = new CultureInfo("ru-ru");
             SpeechRecognitionEngine sre = new SpeechRecognitionEngine(ci);
             sre.SetInputToDefaultAudioDevice();
 
@@ -317,7 +311,7 @@ namespace PrintLabel
             Choices numbers = new Choices();
             for(int i = 0; i < filmInformationList.Count(); i++)
                 numbers.Add(filmInformationList[i].name);
-            numbers.Add("два");
+            
 
 
             GrammarBuilder gb = new GrammarBuilder();
@@ -329,6 +323,11 @@ namespace PrintLabel
             sre.LoadGrammar(g);
 
             sre.RecognizeAsync(RecognizeMode.Multiple);
+        }
+
+        private void ButtonShow_Click(object sender, EventArgs e)
+        {
+            LoadData();
         }
     }
 }

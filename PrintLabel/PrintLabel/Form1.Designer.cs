@@ -38,6 +38,7 @@
             this.Name = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Description = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label2 = new System.Windows.Forms.Label();
+            this.buttonShow = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -135,11 +136,22 @@
             this.label2.TabIndex = 7;
             this.label2.Text = "label2";
             // 
+            // buttonShow
+            // 
+            this.buttonShow.Location = new System.Drawing.Point(12, 184);
+            this.buttonShow.Name = "buttonShow";
+            this.buttonShow.Size = new System.Drawing.Size(75, 23);
+            this.buttonShow.TabIndex = 8;
+            this.buttonShow.Text = "Show all";
+            this.buttonShow.UseVisualStyleBackColor = true;
+            this.buttonShow.Click += new System.EventHandler(this.ButtonShow_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1029, 473);
+            this.Controls.Add(this.buttonShow);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.label1);
@@ -170,6 +182,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Name;
         private System.Windows.Forms.DataGridViewTextBoxColumn Description;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button buttonShow;
     }
 }
 
